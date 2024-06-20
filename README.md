@@ -16,7 +16,7 @@ We trained the model via a python script `model/scripts/model_train.py` (or alte
 
 Here the diffusion matrix of the validation phase that we obtained.
 
-![Confusion Matrix of our YoloV8 object detection model](dataset/readMe_images/confusion_matrix_normalized.png)
+![Confusion Matrix of our YoloV8 object detection model](confusion_matrix_normalized.png)
 
 ## Model used in the project
 You can find the weights of the model we used in our robotics project in `dataset/best.py`.
