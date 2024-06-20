@@ -16,7 +16,7 @@ We trained the model via a python script `model/scripts/model_train.py` (or alte
 
 Here the diffusion matrix of the validation phase that we obtained.
 
-![confusion_matrix_normalized](https://github.com/GioLor33/lego_bricks_detection/assets/106239389/5af21a31-e93f-4bee-acba-1f89f4f92a82 | width=50)
+![confusion_matrix_normalized](https://github.com/GioLor33/lego_bricks_detection/assets/106239389/65c67f02-dd23-4f24-bac5-4de772c43b25)
 
 ## Model used in the project
 You can find the weights of the model we used in our robotics project in `dataset/best.py`.
