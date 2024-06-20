@@ -16,11 +16,7 @@ We trained the model via a python script `model/scripts/model_train.py` (or alte
 
 Here the diffusion matrix of the validation phase that we obtained.
 
-<<<<<<< HEAD
-![Confusion Matrix of our YoloV8 object detection model](confusion_matrix_normalized.png)
-=======
-![confusion_matrix_normalized ](https://github.com/GioLor33/lego_bricks_detection/assets/106239389/5af21a31-e93f-4bee-acba-1f89f4f92a82)
->>>>>>> 850cbcb4d0137dd720e9987906e3b0e7a52c9454
+![confusion_matrix_normalized](https://github.com/GioLor33/lego_bricks_detection/assets/106239389/5af21a31-e93f-4bee-acba-1f89f4f92a82 | width=50)
 
 ## Model used in the project
 You can find the weights of the model we used in our robotics project in `dataset/best.py`.
