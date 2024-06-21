@@ -79,9 +79,6 @@ class Object_Detection():
         names = results.names
         confidences = results.boxes.conf.tolist()
 
-        info_file = self.path_to_predictions + "/" + save_predictions_as + "_info.txt"
-        f = open(info_file,"w")
-
         # Iterate through the results
         i=1
         prediction_list = []
@@ -105,9 +102,13 @@ class Object_Detection():
 
             prediction_list.append([x1,y1,x2,y2,conf,cls,name])
             
-            f.write(self.print())
+            
             i+=1
-
+        
+        info_file = self.path_to_predictions + "/" + save_predictions_as + "_info.txt"
+        f = open(info_file,"w")
+        self.detected_objects = prediction_list
+        f.write(self.print())
         f.close()            
 
         # Save the resulting image with bounding boxes
@@ -115,7 +116,7 @@ class Object_Detection():
             prediction_file = f"{self.path_to_predictions}{save_predictions_as}_prediction.jpg"
             cv2.imwrite(prediction_file, cropped_image)
 
-        self.detected_objects = prediction_list
+        
         if print_to_console:
             self.print(print_to_terminal=True)
 
