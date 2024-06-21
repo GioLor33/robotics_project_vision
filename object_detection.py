@@ -105,7 +105,7 @@ class Object_Detection():
 
             prediction_list.append([x1,y1,x2,y2,conf,cls,name])
             
-            f.write(self.print(prediction_list))
+            f.write(self.print())
             i+=1
 
         f.close()            
