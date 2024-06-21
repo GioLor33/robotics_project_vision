@@ -40,7 +40,7 @@ class Object_Detection():
 
         return text_to_print
 
-    def predict(self, image : Image, save_predictions_as, print_to_console=False, height=1080, width=1920, bottom_crop=0, top_crop=0, right_crop=0, left_crop=0):
+    def predict(self, image, save_predictions_as, print_to_console=False, height=1080, width=1920, bottom_crop=0, top_crop=0, right_crop=0, left_crop=0):
         """
         This function calls the model on the image given, and perform the object detection task.
 
