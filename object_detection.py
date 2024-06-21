@@ -118,4 +118,5 @@ class Object_Detection():
         if print_to_console:
             self.print(print_to_terminal=True)
 
+        self.detected_objects = prediction_list
         return prediction_list
