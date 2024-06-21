@@ -115,8 +115,8 @@ class Object_Detection():
             prediction_file = f"{self.path_to_predictions}{save_predictions_as}_prediction.jpg"
             cv2.imwrite(prediction_file, cropped_image)
 
+        self.detected_objects = prediction_list
         if print_to_console:
             self.print(print_to_terminal=True)
 
-        self.detected_objects = prediction_list
         return prediction_list
