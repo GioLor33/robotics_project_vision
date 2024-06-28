@@ -22,7 +22,7 @@ class Object_Detection():
             text_to_print:      a formatted string with all the information provided by the model on the last image predicted
         """
 
-        text_to_print = "\n********************\n* Objects found:"
+        text_to_print = "\n********************\n Objects found:\n\n"
         count = 1
         for block in self.detected_objects:
             text_to_print += f"   object {count}\n   |- label: {block[6]}\n   |- class: {(int(block[5]))}\n   |- box: {block[:4]}\n   |- confidence: {block[4]}\n\n"
