@@ -63,9 +63,9 @@ def plot_2D_graph(data, name_file_to_save, path_to_save="./", open_preview=False
     y = data[:,1]
 
     plt.figure()
-    plt.plot(y,x)
-    plt.xlabel("y")
-    plt.ylabel("x")
+    plt.plot(x,y)
+    plt.xlabel("x")
+    plt.ylabel("y")
 
     plt.savefig(f'{path_to_save}/{name_file_to_save}.png')
     if open_preview:
