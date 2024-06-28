@@ -36,6 +36,7 @@ def plot_3D_graph(data, name_file_to_save, path_to_save="./", open_preview=False
     if open_preview:
         plt.show()
     plt.clf()
+    plt.close()
 
 def plot_3D_graph_v2(data, name_file_to_save, path_to_save="./", open_preview=False):
     
@@ -57,6 +58,7 @@ def plot_3D_graph_v2(data, name_file_to_save, path_to_save="./", open_preview=Fa
     if open_preview:
         plt.show()
     plt.clf()
+    plt.close()
 
 def plot_2D_graph(data, name_file_to_save, path_to_save="./", open_preview=False):
     x = data[:,0]
@@ -75,3 +77,4 @@ def plot_2D_graph(data, name_file_to_save, path_to_save="./", open_preview=False
     if open_preview:
         plt.show()
     plt.clf()
+    plt.close()
