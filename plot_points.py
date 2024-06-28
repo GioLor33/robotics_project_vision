@@ -13,7 +13,7 @@ def plot_3D_graph(data, name_file_to_save, path_to_save="./", open_preview=False
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
-    surf = ax.plot_trisurf(y, x, z, cmap=cm.jet, linewidth=0)
+    surf = ax.plot_trisurf(x, y, z, cmap=cm.jet, linewidth=0)
     fig.colorbar(surf)
 
     ax.xaxis.set_major_locator(MaxNLocator(5))
@@ -24,13 +24,13 @@ def plot_3D_graph(data, name_file_to_save, path_to_save="./", open_preview=False
 
     ax.invert_yaxis()
     ax.invert_xaxis()
-    ax.invert_zaxis()
+    #ax.invert_zaxis()
 
-    ax.set_xlabel("y")
-    ax.set_ylabel("x")
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
     ax.set_zlabel("z")
 
-    ax.view_init(-152, -94) 
+    ax.view_init(35, 0) 
 
     fig.savefig(f'{path_to_save}/{name_file_to_save}.png')
     if open_preview:
@@ -46,12 +46,12 @@ def plot_3D_graph_v2(data, name_file_to_save, path_to_save="./", open_preview=Fa
     z = data[:,2]  
     x = data[:,0] 
     y = data[:,1] 
-    ax.plot3D(y, x, z, 'green') 
-    ax.set_xlabel("y")
-    ax.set_ylabel("x")
+    ax.plot3D(x, y, z, 'green') 
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
     ax.set_zlabel("z")
     
-    ax.view_init(-152, -94) 
+    ax.view_init(-134, 87) 
 
     fig.savefig(f'{path_to_save}/{name_file_to_save}.png')
     if open_preview:
@@ -63,9 +63,13 @@ def plot_2D_graph(data, name_file_to_save, path_to_save="./", open_preview=False
     y = data[:,1]
 
     plt.figure()
-    plt.plot(x,y)
-    plt.xlabel("x")
-    plt.ylabel("y")
+    plt.plot(y,x)
+    plt.xlabel("y")
+    plt.ylabel("x")
+
+    plt.gca().invert_xaxis()
+    #plt.gca().invert_yaxis()
+
 
     plt.savefig(f'{path_to_save}/{name_file_to_save}.png')
     if open_preview:
