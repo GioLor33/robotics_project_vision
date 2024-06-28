@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 from matplotlib import cm
 
-def plot_3D_graph(data, name, path_to_save, open_preview=False):
+def plot_3D_graph(data, name_file_to_save, path_to_save="./", open_preview=False):
 
     x = data[:,0]
     y = data[:,1]
@@ -32,11 +32,12 @@ def plot_3D_graph(data, name, path_to_save, open_preview=False):
 
     ax.view_init(-152, -94) 
 
-    fig.savefig(f'{path_to_save}{name}.png')
+    fig.savefig(f'{path_to_save}/{name_file_to_save}.png')
     if open_preview:
         plt.show()
+    plt.clf()
 
-def plot_3D_graph_v2(data, name, path_to_save, open_preview=False):
+def plot_3D_graph_v2(data, name_file_to_save, path_to_save="./", open_preview=False):
     
     fig = plt.figure(figsize = (8, 8)) 
     ax = plt.axes(projection = '3d') 
@@ -52,18 +53,21 @@ def plot_3D_graph_v2(data, name, path_to_save, open_preview=False):
     
     ax.view_init(-152, -94) 
 
-    fig.savefig(f'{path_to_save}{name}.png')
+    fig.savefig(f'{path_to_save}/{name_file_to_save}.png')
     if open_preview:
         plt.show()
+    plt.clf()
 
-def plot_2D_graph(data, name, path_to_save, open_preview=False):
+def plot_2D_graph(data, name_file_to_save, path_to_save="./", open_preview=False):
     x = data[:,0]
     y = data[:,1]
 
-    fig = plt.plot(y,x)
+    plt.figure()
+    plt.plot(y,x)
     plt.xlabel("y")
     plt.ylabel("x")
 
-    fig.savefig(f'{path_to_save}{name}.png')
+    plt.savefig(f'{path_to_save}/{name_file_to_save}.png')
     if open_preview:
         plt.show()
+    plt.clf()
