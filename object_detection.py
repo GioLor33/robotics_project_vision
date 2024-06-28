@@ -1,18 +1,12 @@
 from ultralytics import YOLO
 import cv2
+import os
 
 class Object_Detection():
-    def __init__(self, model, path_to_predictions, save_image=False):
+    def __init__(self, model):
         self.model = YOLO(model)
-        self.save_image = save_image
 
-        self.detected_objects = None
-
-        if save_image:
-            assert path_to_predictions is not None
-            self.path_to_predictions = path_to_predictions
-
-    def print(self, print_to_terminal=False):
+    def print(self, detected_objects, print_to_terminal=False):
         """
         This function creates a formatteed string with all the information contained in self.detected_objects.
         
@@ -24,7 +18,7 @@ class Object_Detection():
 
         text_to_print = "\n********************\n Objects found:\n\n"
         count = 1
-        for block in self.detected_objects:
+        for block in detected_objects:
             text_to_print += f"   object {count}\n   |- label: {block[6]}\n   |- class: {(int(block[5]))}\n   |- box: {block[:4]}\n   |- confidence: {block[4]}\n\n"
             count += 1
         text_to_print += "********************"
@@ -34,7 +28,7 @@ class Object_Detection():
 
         return text_to_print
 
-    def predict(self, image, save_predictions_as, print_to_console=False, height=1080, width=1920, bottom_crop=0, top_crop=0, right_crop=0, left_crop=0):
+    def predict(self, image, path_to_save_prediction, print_to_console=False, height=1080, width=1920, bottom_crop=0, top_crop=0, right_crop=0, left_crop=0):
         """
         This function calls the model on the image given, and perform the object detection task.
 
@@ -60,10 +54,12 @@ class Object_Detection():
             - [6] label corresponding to the predicted class
         """
 
+        #create a directory inside path_to_save_predictions to aggregate all the prediction outputs
+        os.mkdir(path_to_save_prediction)
+
         #pre-processing of the image (cropped eliminating 370 pixels from the top in order to remote the UR5-arm)
         cropped_image = image[top_crop:height-bottom_crop, left_crop:width-right_crop]
-        if self.save_image:
-            cv2.imwrite(f"{self.path_to_predictions}/{save_predictions_as}.png", cropped_image)
+        cv2.imwrite(f"{path_to_save_prediction}/cropped.png", cropped_image)
 
         #prediction with the model
         results = self.model(cropped_image, imgsz=640)[0]
@@ -84,10 +80,10 @@ class Object_Detection():
             
             name = names[int(cls)]
 
-            if self.save_image:
-                label = f"{name} {conf:.2f}"
-                cv2.rectangle(cropped_image, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
-                cv2.putText(cropped_image, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            #save image with bounding-boxes
+            label = f"{name} {conf:.2f}"
+            cv2.rectangle(cropped_image, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
+            cv2.putText(cropped_image, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
             x1 += left_crop
             x2 += left_crop
@@ -96,22 +92,18 @@ class Object_Detection():
 
             prediction_list.append([x1,y1,x2,y2,conf,cls,name])
             
-            
             i+=1
         
-        info_file = self.path_to_predictions + "/" + save_predictions_as + "_info.txt"
+        info_file = path_to_save_prediction + "/info.txt"
         f = open(info_file,"w")
-        self.detected_objects = prediction_list
-        f.write(self.print())
+        f.write(self.print(prediction_list))
         f.close()            
 
         # Save the resulting image with bounding boxes
-        if self.save_image:
-            prediction_file = f"{self.path_to_predictions}{save_predictions_as}_prediction.jpg"
-            cv2.imwrite(prediction_file, cropped_image)
-
+        prediction_file = f"{path_to_save_prediction}/prediction.png"
+        cv2.imwrite(prediction_file, cropped_image)
         
         if print_to_console:
-            self.print(print_to_terminal=True)
+            self.print(prediction_list, print_to_terminal=True)
 
         return prediction_list
