@@ -55,7 +55,7 @@ class Object_Detection():
         """
 
         #create a directory inside path_to_save_predictions to aggregate all the prediction outputs
-        os.mkdir(path_to_save_prediction)
+        os.makedirs(path_to_save_prediction)
 
         #pre-processing of the image (cropped eliminating 370 pixels from the top in order to remote the UR5-arm)
         cropped_image = image[top_crop:height-bottom_crop, left_crop:width-right_crop]
@@ -71,6 +71,7 @@ class Object_Detection():
 
         # Iterate through the results
         i=1
+        cropped_image_obj = cropped_image.copy()
         prediction_list = []
         for box, cls, conf in zip(boxes, classes, confidences):
             x1, y1, x2, y2 = box
@@ -85,6 +86,10 @@ class Object_Detection():
             cv2.rectangle(cropped_image, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
             cv2.putText(cropped_image, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
+            label_obj = f"obj{i}"
+            cv2.rectangle(cropped_image_obj, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
+            cv2.putText(cropped_image_obj, label_obj, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
             x1 += left_crop
             x2 += left_crop
             y1 += top_crop
@@ -92,7 +97,7 @@ class Object_Detection():
 
             prediction_list.append([x1,y1,x2,y2,conf,cls,name])
             
-            i+=1
+            i += 1
         
         info_file = path_to_save_prediction + "/info.txt"
         f = open(info_file,"w")
@@ -100,8 +105,11 @@ class Object_Detection():
         f.close()            
 
         # Save the resulting image with bounding boxes
-        prediction_file = f"{path_to_save_prediction}/prediction.png"
+        prediction_file = f"{path_to_save_prediction}/prediction_name.png"
         cv2.imwrite(prediction_file, cropped_image)
+
+        prediction_file_obj = f"{path_to_save_prediction}/prediction_obj.png"
+        cv2.imwrite(prediction_file_obj, cropped_image_obj)
         
         if print_to_console:
             self.print(prediction_list, print_to_terminal=True)
