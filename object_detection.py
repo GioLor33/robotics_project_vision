@@ -8,6 +8,7 @@ import cv2
 import os
 from itertools import combinations
 import math
+import numpy as np
 
 MAX_OVERLAP_RATE = 0.7
 
@@ -82,6 +83,7 @@ class Object_Detection():
         #create a directory inside path_to_save_predictions to aggregate all the prediction outputs
         os.makedirs(path_to_save_prediction)
 
+        image = self.filter_image(image)
         #pre-processing of the image (cropped eliminating 370 pixels from the top in order to remote the UR5-arm)
         cropped_image = image[top_crop:height-bottom_crop, left_crop:width-right_crop]
         cv2.imwrite(f"{path_to_save_prediction}/cropped.png", cropped_image)
@@ -200,3 +202,32 @@ class Object_Detection():
         ]
 
         return predicted_objects
+    
+    def filter_image(self, image_cv2):
+        """! 
+        This function removes all unwanted factors from the image, such as the background, the table shape and the shadows 
+        """
+
+        # we have to cut above the line passing through the points
+        # (1200,410) and (1540,900)
+        # to exclude the blocks already positioned
+        for (py, row) in enumerate(image_cv2):
+            for (px,pixel) in enumerate(row):
+                if ( (px - 1200) / 340 - (py - 410) / 490 ) > 0:
+                    image_cv2[py][px] = (255, 255, 255)
+
+        hsv = cv2.cvtColor(image_cv2, cv2.COLOR_BGR2HSV)
+
+        mask = cv2.inRange(hsv, (0, 0, 100), (255, 5, 255))
+
+        # Build mask of non black pixels.
+        nzmask = cv2.inRange(hsv, (0, 0, 5), (255, 255, 255))
+
+        # Erode the mask - all pixels around a black pixels should not be masked.
+        nzmask = cv2.erode(nzmask, np.ones((3,3)))
+
+        mask = mask & nzmask
+
+        image_cv2[np.where(mask)] = 255
+
+        return image_cv2
