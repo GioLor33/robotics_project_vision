@@ -112,7 +112,7 @@ class Object_Detection():
 
             prediction_list.append([x1,y1,x2,y2,conf,cls,name])
 
-        self.filter_predictions(prediction_list)
+        prediction_list = self.filter_predictions(prediction_list)
 
         info_file = path_to_save_prediction + "/info.txt"
         f = open(info_file,"w")
