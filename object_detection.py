@@ -205,7 +205,13 @@ class Object_Detection():
     
     def filter_image(self, image_cv2):
         """! 
-        This function removes all unwanted factors from the image, such as the background, the table shape and the shadows 
+        Removes all unwanted factors from the image, such as the background, the table shape and the shadows.
+
+        @type: image
+        @param imgave_cv2: the image to filter
+
+        @rtype: image
+        @return: Returns a filtered image
         """
 
         # we have to cut above the line passing through the points
