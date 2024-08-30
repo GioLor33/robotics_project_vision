@@ -10,6 +10,7 @@ from itertools import combinations
 import math
 import numpy as np
 
+## Percentage (%) of area that needs to be overlapping for two bbox to be considered the same
 MAX_OVERLAP_RATE = 0.7
 
 class Object_Detection():
@@ -20,14 +21,10 @@ class Object_Detection():
         """!
         This function creates a formatted string with all the information contained in detected_objects.
         
-        @type: list
         @param detected_objects: a list of detected object to print
-
-        @type: boolean
         @param print_to_terminal: if True, the function prints directly the formatted string to terminal
 
-        @rtype: string
-        @return: Returns a formatted string with all the information provided by the model on the last image predicted
+        @return Returns a formatted string with all the information provided by the model on the last image predicted
         """
 
         text_to_print = "\n********************\n Objects found:\n\n"
@@ -46,37 +43,17 @@ class Object_Detection():
         """!
         This function calls the model on the image given, and perform the object detection task.
 
-        @type: image
         @param image: an Image object on which perform object detection
-
-        @type: string
         @param save_predictions_as: the (path/)name the predictions files needs to be save as
-
-        @type: boolean
         @param print_to_console: if True, prints the predicted informations on the terminal
-           
-        @type: float
         @param height: height of the image
-
-        @type: float
         @param width: width of the image
-
-        @type: int
         @param bottom_crop: pixel to crop on the bottom part of the image
-
-        @type: int
         @param top_crop: pixel to crop on the top part of the image
-
-        @type: int
         @param right_crop: pixel to crop on the right part of the image
-
-        @type: int
         @param left_crop: pixel to crop on the left part of the image
-
-        @type: boolean
         @param plot_predictions: if True, plot the predictions in the save_predictions_as directory
 
-        @rtype: list
         @return Returns a list of objects containing (x1,x2,y2,confidence,class,label_class)
         """
 
@@ -158,11 +135,9 @@ class Object_Detection():
         """!
         Removes overlapping predictions that overlap for major part of their areas. The prediction kept is the one with most confidence
         
-        @type: list
         @param predicted_objects: a list of predicted object
 
-        @rtype: list
-        @return: Returns the input list filtered
+        @return Returns the input list filtered
         """
         prediction_combinations = combinations(predicted_objects, 2)
         predictions_to_remove = []
@@ -207,11 +182,8 @@ class Object_Detection():
         """! 
         Removes all unwanted factors from the image, such as the background, the table shape and the shadows.
 
-        @type: image
         @param imgave_cv2: the image to filter
-
-        @rtype: image
-        @return: Returns a filtered image
+        @return Returns a filtered image
         """
 
         # we have to cut above the line passing through the points
