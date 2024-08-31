@@ -6,12 +6,7 @@ The class provides some methods to manage the predictions as well.
 from ultralytics import YOLO
 import cv2
 import os
-from itertools import combinations
-import math
 import numpy as np
-
-## Percentage (%) of area that needs to be overlapping for two bbox to be considered the same
-MAX_OVERLAP_RATE = 0.7
 
 class Object_Detection():
     def __init__(self, model):
@@ -91,8 +86,6 @@ class Object_Detection():
 
             prediction_list.append([x1,y1,x2,y2,conf,cls,name])
 
-        prediction_list = self.filter_predictions(prediction_list)
-
         info_file = path_to_save_prediction + "/info.txt"
         f = open(info_file,"w")
         f.write(self.print(prediction_list))
@@ -130,53 +123,6 @@ class Object_Detection():
             self.print(prediction_list, print_to_terminal=True)
 
         return prediction_list
-    
-    def filter_predictions(self, predicted_objects):
-        """!
-        Removes overlapping predictions that overlap for major part of their areas. The prediction kept is the one with most confidence
-        
-        @param predicted_objects: a list of predicted object
-
-        @return Returns the input list filtered
-        """
-        prediction_combinations = combinations(predicted_objects, 2)
-        predictions_to_remove = []
-
-        for (prediction_a, prediction_b) in prediction_combinations:
-            x1a, y1a, x2a, y2a, confidence_a = (*[math.floor(x) for x in prediction_a[:4]], prediction_a[4])
-            area_a = (x2a - x1a) * (y2a - y1a)
-
-            x1b, y1b, x2b, y2b, confidence_b = (*[math.floor(x) for x in prediction_b[:4]], prediction_b[4])
-            area_b = (x2b - x1b) * (y2b - y1b)
-            
-            # compute intersection area
-            x1_int = max(x1a, x1b)
-            x2_int = min(x2a, x2b)
-            y1_int = max(y1a, y1b)
-            y2_int = min(y2a, y2b)
-            area_int = (x2_int - x1_int) * (y2_int - y1_int)
-
-            overlapRate = max(area_int/area_a, area_int/area_b)
-
-            # we have to remove one of the predictions, the one with least confidence
-            if overlapRate >= MAX_OVERLAP_RATE:
-                to_remove = prediction_a
-                if confidence_b < confidence_a:
-                    to_remove = prediction_b
-
-                # save the prediction to remove
-                predictions_to_remove.append(to_remove)
-
-                # and delete it from the coming combinations
-                prediction_combinations = [
-                    p for p in prediction_combinations if p[0] != to_remove and p[1] != to_remove 
-                ]
-
-        predicted_objects = [
-            p for p in predicted_objects if p not in predictions_to_remove
-        ]
-
-        return predicted_objects
     
     def filter_image(self, image_cv2):
         """! 
